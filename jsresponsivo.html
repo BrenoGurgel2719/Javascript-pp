@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Javascript</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Condensed+One&display=swap');
+
+    body {
+      background-color: #166f9c;
+      margin: 0;
+      font-family: "Roboto", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    header h1 {
+      text-align: center;
+      color: white;
+      font-family: "Roboto", sans-serif;
+      padding: 20px 10px;
+    }
+
+    main.ct {
+      background-color: white;
+      max-width: 700px;
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      border-radius: 10px;
+    }
+
+    #txt-rst {
+      width: 100%;
+    }
+
+    #input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: "Special Gothic Condensed One", sans-serif;
+      font-size: 1.5em;
+      gap: 10px;
+    }
+
+    input[type="number"] {
+      padding: 5px;
+      font-size: 1em;
+      width: 100px;
+    }
+
+    .btn, .finish {
+      background-color: rgb(4, 29, 83);
+      color: rgb(245, 245, 245);
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover, .finish:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .spinner {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      border: 8px solid rgb(206, 195, 195);
+      border-top: 8px solid blue;
+      animation: girar 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes girar {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      color: #dafdba;
+      margin-top: 10px;
+      background-color: #002b7c;
+      padding: 5px;
+      font-family: "Bebas Neue", sans-serif;
+    }
+
+    @media (max-width: 500px) {
+      #input {
+        font-size: 1.2em;
+      }
+
+      .spinner {
+        width: 70px;
+        height: 70px;
+        border-width: 6px;
+      }
+
+      .btn, .finish {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Javascript language programming</h1>
+  </header>
+
+  <main class="ct">
+    <div class="spinner"></div>
+
+    <div id="input">
+      Adicione até sete números, de 1 a 100, e finalize:
+      <input type="number" name="n" id="n" min="1" max="100" />
+      <button class="btn">Adicionar</button>
+    </div>
+
+    <div id="txt-rst"></div>
+
+    <button class="finish">Finalizar</button>
+  </main>
+
+  <footer>&copy; Breno_Gurgel</footer>
+
+  <script>
+    const evento = document.getElementsByClassName("btn")[0];
+    const res = document.getElementById("txt-rst");
+    const finalizar = document.getElementsByClassName("finish")[0];
+    let somatorio = 0;
+    let array = [];
+
+    evento.addEventListener("click", clicar);
+    finalizar.addEventListener("click", end);
+
+    function clicar() {
+      let n = Number(document.getElementById("n").value);
+
+      if (n == 0 || n < 1 || n > 100) {
+        window.alert("Número inválido! Tente novamente");
+        document.getElementById("n").value = "";
+        document.getElementById("n").focus();
+      } else {
+        array.push(n);
+        let paragrafo = document.createElement("p");
+        paragrafo.textContent = `O valor ${n} foi adicionado;`;
+        res.appendChild(paragrafo);
+        document.getElementById("n").value = "";
+        document.getElementById("n").focus();
+      }
+    }
+
+    function end() {
+      let spinner = document.getElementsByClassName("spinner")[0];
+      let input = document.getElementById("input");
+      let botao1 = document.getElementsByClassName("btn")[0];
+      let botao2 = document.getElementsByClassName("finish")[0];
+
+      spinner.style.display = "block";
+      input.style.display = "none";
+      res.style.display = "none";
+      botao1.style.display = "none";
+      botao2.style.display = "none";
+
+      setTimeout(function () {
+        spinner.style.display = "none";
+        input.style.display = "flex";
+        res.style.display = "block";
+        botao1.style.display = "inline-block";
+        botao2.style.display = "inline-block";
+
+        if (array.length == 0) {
+          window.alert("Erro! Adicione algo");
+        } else {
+          res.innerHTML = "";
+          res.innerHTML += `Ao todo, foram ${array.length} valores adicionados  \u2705<br>`;
+          array.sort((x, y) => x - y);
+          res.innerHTML += `<br>O menor dos valores foi ${array[0]} \u2705<br>`;
+
+          for (let pos in array) {
+            somatorio = somatorio + array[pos];
+          }
+
+          let media = somatorio / array.length;
+          res.innerHTML += `<br>A soma dos valores foi de ${somatorio}  \u2705<br>`;
+          res.innerHTML += `<br>A média dos valores é ${media}  \u2705<br>`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
